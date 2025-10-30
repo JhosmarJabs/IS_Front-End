@@ -32,4 +32,4 @@ appsettings.Development.json
 *.tsbuildinfo
 
 # Archivos de ejemplo
-src/Ejemplos
+Ejemplos

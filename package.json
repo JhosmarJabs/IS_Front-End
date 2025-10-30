@@ -1,17 +1,25 @@
 {
-  "name": "name_proyect",
+  "name": "is_front-end",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node src/app.ts",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Josmar",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
-    "@types/d3": "^7.4.3"
+    "@types/d3": "^7.4.3",
+    "@types/node": "^24.8.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
+    "d3": "^7.8.5",
     "sweetalert": "^2.1.2"
-  }
+  },
+  "description": ""
 }

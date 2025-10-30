@@ -1,44 +1,23 @@
-  namespace app {
-    export class main {
-      private _figuras: view.figuras;
-      private _usuarios: view.vistaUsuarios;
-      private _circulos: view.svgCirculos;
+namespace app {
+  export class main {
+    private fondo: controller.VentanaBase;
+    private contenedor: controller.VentanaContenedor;
+    private login: view.LoginVentana;
 
-      constructor() {
-        d3.select<HTMLBodyElement, unknown>("body")
-          .append<HTMLButtonElement>("button")
-          .text("rectangulo")
-          .style("margin-right", "10px")
-          .on("click", (): void => {
-            if (!this._figuras) {
-              this._figuras = new view.figuras();
-            }
-            this._figuras.ventanaVisible();
-          });
+    constructor() {
+      // 1. Crea el fondo de pantalla (ajustado a fondo completo)
+      this.fondo = new controller.VentanaBase();
 
-        d3.select<HTMLBodyElement, unknown>("body")
-          .append<HTMLButtonElement>("button")
-          .text("Usuarios")
-          .style("margin-right", "10px")
-          .on("click", (): void => {
-            if (!this._usuarios) {
-              this._usuarios = new view.vistaUsuarios();
-            }
-            this._usuarios.verPantalla();
-          });
+      // 2. Crea el contenedor central para las vistas de login/registros, etc.
+      this.contenedor = new controller.VentanaContenedor(this.fondo);
 
-        d3.select<HTMLBodyElement, unknown>("body")
-          .append<HTMLButtonElement>("button")
-          .style("margin-right", "10px")
-          .text("Circulo")
-          .on("click", (): void => {
-            if (!this._circulos) {
-              this._circulos = new view.svgCirculos();
-            }
-            this._circulos.abrirPantallaCirculos();
-          });
-      }
+      // 3. Pinta el formulario de login dentro del contenedor
+      this.login = new view.LoginVentana(this.contenedor);
+
+      // 4. Si quieres controlar visibilidad:
+      this.fondo.mostrar();
     }
   }
+}
 
-  var appMain: app.main = new app.main(); 
+const appMain = new app.main();
