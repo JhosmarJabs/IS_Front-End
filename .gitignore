@@ -1,5 +1,5 @@
 # Archivos compilados de .NET
-bin/
+# bin/
 obj/
 *.dll
 *.exe

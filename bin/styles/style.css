@@ -1,0 +1,10 @@
+body {
+  background-color: #3c3c3c;
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.placeholder-blanco::placeholder {
+  color: #ffffff; /* o cualquier color */
+}

@@ -1,0 +1,32 @@
+.ventana-contenedor-d3 {
+  border-radius: 10px;
+  background: rgba(114, 114, 114, 0.48);
+  box-shadow: 0 0 24px rgba(0,0,0,0.15);
+  padding: 30px 40px;
+  max-width: 100%;
+  width: 550px;
+  height: 450px;
+  border: 2px solid rgba(255,255,255,0.2);
+  color: #ffffff;
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.fondo-principal-d3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+

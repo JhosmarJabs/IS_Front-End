@@ -1,0 +1,37 @@
+.titulo1-d3 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+  font-weight: 700;
+}
+.titulo2-d3 {
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 18px;
+  color: #fff;
+  font-weight: 600;
+}
+.titulo3-d3 {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 400;
+}
+.texto-d3 {
+  font-size: 1rem;
+  color: #dadada;
+  margin-bottom: 12px;
+}
+.texto-link-d3 {
+  font-size: 1rem;
+  color: #4fc3f7;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.texto-link-d3:hover {
+  color: #1565c0;
+}
