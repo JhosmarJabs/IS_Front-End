@@ -30,4 +30,3 @@ var controller;
     }
     controller.TextBuilder = TextBuilder;
 })(controller || (controller = {}));
-//# sourceMappingURL=ControllerText.js.map

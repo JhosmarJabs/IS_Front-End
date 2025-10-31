@@ -31,4 +31,3 @@ var controller;
     }
     controller.VentanaBase = VentanaBase;
 })(controller || (controller = {}));
-//# sourceMappingURL=ControllerViews.js.map

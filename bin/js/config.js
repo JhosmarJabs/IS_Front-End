@@ -1,13 +1,13 @@
 var config;
 (function (config) {
+    var _a;
     class ApiConfig {
     }
-    ApiConfig.API_BASE_URL = "http://localhost:5000/auth/verificar-correo";
+    _a = ApiConfig;
+    ApiConfig.API_BASE_URL = "http://localhost:5000/auth";
+    ApiConfig.API_BASE_URL1 = "https://is-back-end.onrender.com/auth";
+    ApiConfig.API_GENERAR_TOKEN = `${_a.API_BASE_URL}/GenerateVerificationToken`;
+    ApiConfig.API_VERIFICAR_TOKENS = `${_a.API_BASE_URL}/VerifyTokens`;
+    ApiConfig.API_VERIFICAR_CORREO = `${_a.API_BASE_URL}/CheckEmailExists`;
     config.ApiConfig = ApiConfig;
-    // public static readonly API_PERSONAS: string = `${ApiConfig.API_BASE_URL}/GetPersonas`;
-    // public static readonly API_CREATE_PERSONA: string = `${ApiConfig.API_BASE_URL}/CreatePersona`;
-    // public static readonly API_UPDATE_PERSONA: string = `${ApiConfig.API_BASE_URL}/UpdatePersona`;
-    // public static readonly API_DELETE_PERSONA: string = `${ApiConfig.API_BASE_URL}/DeletePersona`;
-    // public static readonly API_EMPRESAS: string = `${ApiConfig.API_BASE_URL}/GetEmpresas`;
 })(config || (config = {}));
-//# sourceMappingURL=config.js.map

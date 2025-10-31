@@ -17,7 +17,7 @@
   text-align: center;
   margin-bottom: 5px;
   margin-top: 5px;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 400;
 }
 .texto-d3 {
@@ -34,4 +34,17 @@
 }
 .texto-link-d3:hover {
   color: #1565c0;
+}
+
+a.custom-link {
+  color: #6200ff; /* Cambia por el color que quieras */
+  text-decoration: none; /* Quita subrayado si quieres */
+
+  /* Opcional: efectos al pasar el mouse */
+  transition: color 0.3s ease;
+}
+
+a.custom-link:hover {
+  color: #4700cc; /* Color al hacer hover */
+  text-decoration: underline; /* Subrayado en hover, opcional */
 }

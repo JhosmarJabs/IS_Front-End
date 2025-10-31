@@ -108,3 +108,8 @@
   filter: brightness(0.7) opacity(0.55);
   /* Puedes agregar: border: 2px dashed #ccc; si quieres que se noten más */
 }
+
+.custom-select option {
+  background-color: #480ac477;
+  color: #fff;
+}

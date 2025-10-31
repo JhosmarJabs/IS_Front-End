@@ -1,10 +1,11 @@
 var view;
 (function (view) {
     class LoginVentana {
-        constructor(wrapper) {
+        constructor(wrapper, onRegistro) {
             this.control = new controller.ControlBuilder();
             this.texto = new controller.TextBuilder();
             this.contenedor = wrapper.contenedor;
+            this.onRegistro = onRegistro || null;
             this.render();
         }
         render() {
@@ -16,6 +17,18 @@ var view;
             this.control.button(this.contenedor, {
                 label: "Iniciar Sesión",
                 onClick: () => this.enviarCorreo()
+            });
+            // Aquí se agrega el texto debajo del input
+            this.contenedor.append("div")
+                .style("margin", "8px 0 16px 0")
+                .style("font-size", "14px")
+                .html('¿Todavía no tienes una cuenta?&nbsp;<a href="#" class="custom-link" id="link-registrarse">Registrarse</a>');
+            d3.select("#link-registrarse").on("click", (event) => {
+                event.preventDefault();
+                this.contenedor.html(""); // Limpia el login
+                // Llama el callback si fue proporcionado
+                if (this.onRegistro)
+                    this.onRegistro();
             });
         }
         enviarCorreo() {
@@ -48,7 +61,7 @@ var view;
                 { icon: "bx bxl-whatsapp", label: "WhatsApp", method: "whatsapp" },
                 { icon: "bx bx-fingerprint", label: "Huella Dactilar", method: "fingerprint", disabled: true }
             ];
-            new controller.LoginOptionsBuilder().render(this.contenedor, opciones, (method) => this.navegarAMetodo(method));
+            new controller.ControlBuilder().CasillasBuilder(this.contenedor, opciones, (method) => this.navegarAMetodo(method));
         }
         navegarAMetodo(method) {
             const loginPages = {
@@ -70,4 +83,3 @@ var view;
     }
     view.LoginVentana = LoginVentana;
 })(view || (view = {}));
-//# sourceMappingURL=login.js.map

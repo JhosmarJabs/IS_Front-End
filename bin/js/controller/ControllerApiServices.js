@@ -10,8 +10,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var controller;
 (function (controller) {
     class ApiService {
+        static enviarTokenVerificacion(correo, telefono, tipo = "Verificacion") {
+            return fetch(config.ApiConfig.API_GENERAR_TOKEN, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    correo,
+                    telefono,
+                    tipo
+                })
+            })
+                .then((res) => __awaiter(this, void 0, void 0, function* () {
+                const data = yield res.json();
+                return { ok: res.ok, data };
+            }));
+        }
         static enviarCorreoVerificacion(email) {
-            return fetch(config.ApiConfig.API_BASE_URL, {
+            return fetch(config.ApiConfig.API_VERIFICAR_CORREO, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(email)
@@ -21,7 +36,23 @@ var controller;
                 return { ok: res.ok, data };
             }));
         }
+        static verificarTokens(userID, type, tokenCorreo, tokenSMS) {
+            const body = {
+                UsuarioId: userID,
+                Tipo: type,
+                Correo: tokenCorreo,
+                Telefono: tokenSMS
+            };
+            return fetch(config.ApiConfig.API_VERIFICAR_TOKENS, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+                .then((res) => __awaiter(this, void 0, void 0, function* () {
+                const data = yield res.json();
+                return { ok: res.ok, data };
+            }));
+        }
     }
     controller.ApiService = ApiService;
 })(controller || (controller = {}));
-//# sourceMappingURL=ControllerApiServices.js.map
