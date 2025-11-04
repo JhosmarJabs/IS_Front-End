@@ -18,7 +18,7 @@ namespace view {
 
       btn.onclick = () => {
         // Aquí llamas el método de imprimir en consola
-        this.registro.getPersona();
+        // this.registro.getPersona();
       };
 
       document.body.appendChild(btn);

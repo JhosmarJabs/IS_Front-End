@@ -37,13 +37,16 @@ var controller;
                 select.append("option")
                     .attr("value", "")
                     .attr("disabled", "true")
-                    .attr("selected", "true")
+                    .attr("selected", !config.value ? "true" : null)
                     .text(config.placeholder);
             }
             config.options.forEach(opt => {
-                select.append("option")
+                const option = select.append("option")
                     .attr("value", opt.value)
                     .text(opt.label);
+                if (config.value && opt.value === config.value) {
+                    option.attr("selected", "true");
+                }
             });
             if (config.id) {
                 select.attr("id", config.id);
@@ -62,6 +65,24 @@ var controller;
                 btn.on("click", config.onClick);
             }
             return btn;
+        }
+        navDobleBotones(parent, opciones) {
+            const nav = parent.append("div")
+                .style("display", "flex")
+                .style("justify-content", "space-between")
+                .style("width", "80%");
+            nav.append("button")
+                .text(opciones.backLabel)
+                .attr("class", "btn")
+                .style("margin-right", "10px")
+                .on("click", opciones.onBack);
+            const btnNext = nav.append("button")
+                .text(opciones.nextLabel)
+                .attr("class", "btn")
+                .style("margin-left", "10px")
+                .property("disabled", !!opciones.nextDisabled)
+                .on("click", opciones.onNext);
+            return btnNext;
         }
         CasillasBuilder(parent, options, onSelect) {
             const grid = parent.append("div")

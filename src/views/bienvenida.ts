@@ -2,17 +2,16 @@ namespace view {
   export class bienvenida {
     private contenedor: d3.Selection<HTMLDivElement, any, any, any>;
 
-    constructor(wrapper: controller.VentanaContenedor) {
-      this.contenedor = wrapper.contenedor;
+    constructor() {
       this.render();
     }
 
     private render() {
-      // Limpia contenedor
+      this.contenedor = d3.select(".fondo-principal-d3");
       this.contenedor.html("");
 
-      // Aplica estilos para fondo animado
-      this.contenedor.style("position", "relative")
+      this.contenedor
+        .style("position", "relative")
         .style("height", "100vh")
         .style("background", "linear-gradient(135deg, #0f2027, #203a43, #2c5364)")
         .style("font-family", "'Orbitron', sans-serif")
@@ -22,7 +21,7 @@ namespace view {
         .style("align-items", "center")
         .style("overflow", "hidden");
 
-      // Fondo puntos animados - un div extra
+      // Animación de fondo
       const bgDots = this.contenedor.append("div")
         .style("position", "absolute")
         .style("top", "0")
@@ -34,7 +33,7 @@ namespace view {
         .style("background-size", "50px 50px")
         .style("animation", "dotsMove 10s linear infinite");
 
-      // Estilos keyframes necesitan inyectarse en head al menos una vez:
+      // Keyframes animados
       const style = document.createElement("style");
       style.textContent = `
         @keyframes dotsMove {
@@ -44,7 +43,7 @@ namespace view {
       `;
       document.head.appendChild(style);
 
-      // Container principal para contenido
+      // Contenedor de bienvenida
       const box = this.contenedor.append("div")
         .style("position", "relative")
         .style("z-index", "1")
@@ -55,7 +54,7 @@ namespace view {
         .style("box-shadow", "0 0 15px #00ffe6, inset 0 0 10px #00ffe6")
         .style("animation", "pulseGlow 3s ease-in-out infinite");
 
-      // Inyectar keyframes animacion pulso si no existe
+      // Keyframes pulso
       const pulseStyles = document.createElement("style");
       pulseStyles.textContent = `
         @keyframes pulseGlow {
@@ -77,7 +76,7 @@ namespace view {
         .style("letter-spacing", "3px");
 
       box.append("p")
-        .text("Gracias por confiar en nuestra plataforma futurista")
+        .text("Gracias por confiar en nuestra plataforma " + appMain.gUser.correoGlobal)
         .style("font-size", "1.2rem")
         .style("opacity", "0.7")
         .style("margin-bottom", "40px")
@@ -111,7 +110,7 @@ namespace view {
             .style("box-shadow", "0 0 10px #00ffe6");
         })
         .on("click", () => {
-          alert("¡Comienza tu experiencia futurista!");
+          alert("¡Comienza tu experiencia!");
         });
     }
   }

@@ -26,6 +26,7 @@ namespace controller {
 
     public select(parent: d3.Selection<any, any, any, any>, config: {
       options: Array<{ value: string, label: string }>,
+      value?: string,  // <--- nuevo parámetro valor precargado
       placeholder?: string,
       marginBottom?: string,
       onChange?: (event: any) => void,
@@ -53,20 +54,23 @@ namespace controller {
         select.append("option")
           .attr("value", "")
           .attr("disabled", "true")
-          .attr("selected", "true")
+          .attr("selected", !config.value ? "true" : null)
           .text(config.placeholder);
       }
 
       config.options.forEach(opt => {
-        select.append("option")
+        const option = select.append("option")
           .attr("value", opt.value)
           .text(opt.label);
+
+        if (config.value && opt.value === config.value) {
+          option.attr("selected", "true");
+        }
       });
 
       if (config.id) {
         select.attr("id", config.id);
       }
-
 
       if (config.onChange) {
         select.on("change", config.onChange);
@@ -76,8 +80,7 @@ namespace controller {
 
       return select;
     }
-
-
+    
     public button(parent: d3.Selection<any, any, any, any>, config: {
       label: string,
       color?: string,
@@ -90,6 +93,37 @@ namespace controller {
         btn.on("click", config.onClick);
       }
       return btn;
+    }
+
+    public navDobleBotones(
+      parent: d3.Selection<any, any, any, any>,
+      opciones: {
+        backLabel: string,
+        onBack: () => void,
+        nextLabel: string,
+        onNext: () => void,
+        nextDisabled?: boolean
+      }
+    ) {
+      const nav = parent.append("div")
+        .style("display", "flex")
+        .style("justify-content", "space-between")
+        .style("width", "80%");
+
+      nav.append("button")
+        .text(opciones.backLabel)
+        .attr("class", "btn")
+        .style("margin-right", "10px")
+        .on("click", opciones.onBack);
+
+      const btnNext = nav.append("button")
+        .text(opciones.nextLabel)
+        .attr("class", "btn")
+        .style("margin-left", "10px")
+        .property("disabled", !!opciones.nextDisabled)
+        .on("click", opciones.onNext);
+
+      return btnNext;
     }
 
     public CasillasBuilder(

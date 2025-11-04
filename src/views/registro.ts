@@ -7,17 +7,12 @@ namespace view {
     private onBienvenida: (() => void) | null;
     private onAtras: (() => void) | null;
 
-    public getPersona() {
-      console.log(this.persona);
-    }
-
-    // Arreglo privado para guardar persona capturadas poco a poco
     private persona: models.Persona = {
-      Nombre: "Josmar",
-      ApellidoPaterno: "Bautista",
-      ApellidoMaterno: "Saavedra",
-      CorreoElectronico: "josmar050110@gmail.com",
-      NumeroTelefono: "7712194196",
+      Nombre: "",
+      ApellidoPaterno: "",
+      ApellidoMaterno: "",
+      CorreoElectronico: "",
+      NumeroTelefono: "",
       Sexo: "",
       FechaNacimiento: "",
       HuellaDactilar: null,
@@ -59,26 +54,14 @@ namespace view {
         marginBottom: "18px"
       });
 
-      const nav = this.contenedor.append("div")
-        .style("display", "flex")
-        .style("justify-content", "space-between")
-        .style("width", "80%")
-        .style("margin", "0 auto");
-
-      // Botón Atrás: aquí puedes definir la navegación que quieras
-      const btnAtras = this.control.button(nav, {
-        label: "Atrás",
-        onClick: () => {
+      const btnSiguiente = this.control.navDobleBotones(this.contenedor, {
+        backLabel: "Atrás",
+        onBack: () => {
           this.contenedor.html(""); // Limpia el login
           if (typeof this.onAtras === "function") this.onAtras();
-        }
-      });
-      btnAtras.style("margin-right", "10px");
-
-      // Botón Siguiente
-      const btnSiguiente = this.control.button(nav, {
-        label: "Siguiente",
-        onClick: () => {
+        },
+        nextLabel: "Siguiente",
+        onNext: () => {
           const nombre = inputNombre.node()?.value || "";
           const apellidoPaterno = inputApellidoPaterno.node()?.value || "";
           const apellidoMaterno = inputApellidoMaterno.node()?.value || "";
@@ -99,19 +82,34 @@ namespace view {
           this.persona.Nombre = nombre;
           this.persona.ApellidoPaterno = apellidoPaterno;
           this.persona.ApellidoMaterno = apellidoMaterno;
+
           this.renderFechaNacimientoYSexo();
-        }
+        },
+        nextDisabled: false
       });
-      btnSiguiente.style("margin-left", "10px");
     }
 
     private renderFechaNacimientoYSexo() {
       this.contenedor.html("");
       this.texto.titulo1(this.contenedor, "Fecha de Nacimiento");
 
+      let diaPre = "";
+      let mesPre = "";
+      let añoPre = "";
+      if (this.persona.FechaNacimiento) {
+        const partes = this.persona.FechaNacimiento.split("-");
+        if (partes.length === 3) {
+          añoPre = partes[0];
+          mesPre = String(parseInt(partes[1], 10));  // elimina cero a la izquierda
+          diaPre = String(parseInt(partes[2], 10));  // elimina cero a la izquierda
+        }
+      }
+
+
       this.control.select(this.contenedor, {
         id: "birth-day",
         placeholder: "Día",
+        value: diaPre,
         options: Array.from({ length: 31 }, (_, i) => ({ value: (i + 1).toString(), label: (i + 1).toString() })),
         marginBottom: "18px"
       });
@@ -119,6 +117,7 @@ namespace view {
       this.control.select(this.contenedor, {
         id: "birth-month",
         placeholder: "Mes",
+        value: mesPre,
         options: [
           { value: "1", label: "Enero" },
           { value: "2", label: "Febrero" },
@@ -144,6 +143,7 @@ namespace view {
       this.control.select(this.contenedor, {
         id: "birth-year",
         placeholder: "Año",
+        value: añoPre,
         options: opcionesAño,
         marginBottom: "18px"
       });
@@ -151,6 +151,7 @@ namespace view {
       this.control.select(this.contenedor, {
         id: "gender",
         placeholder: "Selecciona tu sexo",
+        value: this.persona.Sexo,
         options: [
           { value: "male", label: "Masculino" },
           { value: "female", label: "Femenino" },
@@ -159,20 +160,11 @@ namespace view {
         marginBottom: "18px"
       });
 
-      const nav = this.contenedor.append("div")
-        .style("display", "flex")
-        .style("justify-content", "space-between")
-        .style("width", "80%");
-
-      const btnAtras = this.control.button(nav, {
-        label: "Atrás",
-        onClick: () => this.render()
-      });
-      btnAtras.style("margin-right", "10px");
-
-      const btnSiguiente = this.control.button(nav, {
-        label: "Siguiente",
-        onClick: () => {
+      this.control.navDobleBotones(this.contenedor, {
+        backLabel: "Atrás",
+        onBack: () => this.render(),
+        nextLabel: "Siguiente",
+        onNext: () => {
           const dia = (document.getElementById("birth-day") as HTMLSelectElement).value;
           const mes = (document.getElementById("birth-month") as HTMLSelectElement).value;
           const año = (document.getElementById("birth-year") as HTMLSelectElement).value;
@@ -181,10 +173,11 @@ namespace view {
           this.persona.FechaNacimiento = `${año}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
           this.persona.Sexo = sexo;
           this.renderContacto();
-        }
+        },
+        nextDisabled: false
       });
-      btnSiguiente.style("margin-left", "10px");
     }
+
     private renderContacto() {
       this.contenedor.html("");
       this.texto.titulo1(this.contenedor, "Información de Contacto");
@@ -208,20 +201,11 @@ namespace view {
         .style("margin-bottom", "20px")
         .html('<i class="bx bx-info-circle"></i> Este número se utilizará también para enviar mensajes por WhatsApp');
 
-      const nav = this.contenedor.append("div")
-        .style("display", "flex")
-        .style("justify-content", "space-between")
-        .style("width", "80%");
-
-      const btnAtras = this.control.button(nav, {
-        label: "Atrás",
-        onClick: () => this.renderFechaNacimientoYSexo()
-      });
-      btnAtras.style("margin-right", "10px");
-
-      const btnSiguiente = this.control.button(nav, {
-        label: "Siguiente",
-        onClick: () => {
+      this.control.navDobleBotones(this.contenedor, {
+        backLabel: "Atrás",
+        onBack: () => this.renderFechaNacimientoYSexo(),
+        nextLabel: "Siguiente",
+        onNext: () => {
           const telefono = inputTelefono.node()?.value || "";
           const correo = inputCorreo.node()?.value || "";
 
@@ -247,26 +231,23 @@ namespace view {
           this.enviarToken(correo, telefono);
 
           this.renderVerificacion();
-        }
+        },
+        nextDisabled: false
       });
-      btnSiguiente.style("margin-left", "10px");
     }
 
     private enviarToken(correo: string, telefono: string) {
-      controller.ApiService.enviarTokenVerificacion(correo, telefono, "Verificacion")
-        .then(response => {
-          if (response.ok && response.data.exists === false) {
-            this.renderVerificacion();
-          } else if (response.data.exists) {
-            alert("El correo ya está registrado. Ingresa uno diferente.");
-          } else {
-            alert("Hubo un error en la verificación del correo.");
-          }
-        })
-        .catch(() => {
-          alert("Error de conexión con el servicio de verificación.");
-        });
+      controller.ApiService.enviarToken(-1, correo, telefono, "Verificacion", (success, response) => {
+        if (success && response.exists === false) {
+          this.renderVerificacion();
+        } else if (response && response.exists) {
+          alert("El correo ya está registrado. Ingresa uno diferente.");
+        } else {
+          console.error("Error al enviar el token de verificación.");
+        }
+      });
     }
+
 
     private renderVerificacion() {
       this.contenedor.html("");
@@ -319,17 +300,13 @@ namespace view {
             alert("Los códigos deben tener 6 dígitos");
             return;
           }
-          controller.ApiService.verificarTokens(-1, "verificacion", emailCode, smsCode)
-            .then(response => {
-              if (response.ok && response.data.message && response.data.message.includes("válido")) {
-                this.renderBiometricos();
-              } else {
-                alert("Código de verificación incorrecto");
-              }
-            })
-            .catch(() => {
-              alert("Error en comunicación con el servidor");
-            });
+          controller.ApiService.verificarTokens(-1, "verificacion", emailCode, smsCode, (success, response) => {
+            if (success && response.message) {
+              this.renderBiometricos();
+            } else {
+              alert("Código de verificación incorrecto");
+            }
+          });
         }
       });
       btnSiguiente.style("margin-left", "10px");
@@ -355,9 +332,9 @@ namespace view {
         .style("width", "160px");
       const iconFace = faceLeft.append("i")
         .attr("id", "icon-faceid-biom")
-        .attr("class", "bx bx-face")
+        .attr("class", this.persona.FaceID ? "bx bx-check-circle" : "bx bx-face")
         .style("font-size", "4rem")
-        .style("color", "rgba(255,255,255,0.8)");
+        .style("color", this.persona.FaceID ? "#00ff85" : "rgba(255,255,255,0.8)");
       faceLeft.append("div")
         .style("font-size", "1.1rem")
         .style("font-weight", "500")
@@ -368,16 +345,33 @@ namespace view {
       const faceRight = faceRow.append("div")
         .style("flex", "1")
         .style("text-align", "right");
+
       const btnFace = this.control.button(faceRight, {
         label: "Capturar rostro",
         onClick: () => {
-          this.ventanaFaceID(() => {
-            iconFace.attr("class", "bx bx-check-circle").style("color", "#00ff85");
-            btnSiguiente.attr("disabled", null);
+          this.ventanaFaceID((descriptor) => {
+            if (descriptor) {
+              iconFace.attr("class", "bx bx-check-circle").style("color", "#00ff85");
+              btnSiguiente.attr("disabled", null);
+              btnFace.attr("disabled", true)     // Deshabilita el botón luego de registrar rostro
+                .style("background", "rgba(200,200,200,0.15)")
+                .style("color", "#bbb")
+                .style("cursor", "not-allowed");
+            } else {
+              iconFace.attr("class", this.persona.FaceID ? "bx bx-check-circle" : "bx bx-face")
+                .style("color", this.persona.FaceID ? "#00ff85" : "rgba(255,255,255,0.8)");
+            }
           });
         }
-      });
-      btnFace.style("width", "190px");
+      }).style("width", "190px");
+
+      if (this.persona.FaceID) {
+        btnFace
+          .attr("disabled", true)
+          .style("background", "rgba(200,200,200,0.15)")
+          .style("color", "#bbb")
+          .style("cursor", "not-allowed");
+      }
 
       const fingerRow = this.contenedor.append("div")
         .style("display", "flex")
@@ -418,19 +412,13 @@ namespace view {
         .style("color", "#bbb")
         .style("cursor", "not-allowed");
 
-      const nav = this.contenedor.append("div")
-        .style("display", "flex")
-        .style("justify-content", "space-between")
-        .style("width", "80%");
-      this.control.button(nav, {
-        label: "Atrás",
-        onClick: () => this.renderVerificacion()
-      }).style("margin-right", "10px");
-
-      const btnSiguiente = this.control.button(nav, {
-        label: "Siguiente",
-        onClick: () => this.renderContraseña()
-      }).style("margin-left", "10px").attr("disabled", true);
+      const btnSiguiente = this.control.navDobleBotones(this.contenedor, {
+        backLabel: "Atrás",
+        onBack: () => this.renderVerificacion(),
+        nextLabel: "Siguiente",
+        onNext: () => this.renderContraseña(),
+        nextDisabled: true
+      });
     }
 
     private ventanaFaceID(callback: (faceDescriptor: number[] | null) => void) {
@@ -553,6 +541,37 @@ namespace view {
         marginBottom: "18px"
       }) as d3.Selection<HTMLInputElement, any, any, any>;
 
+      // Agregar toggles de mostrar/ocultar para inputs
+      const inputBoxPassword = inputPassword.node().parentNode as HTMLElement;
+      const iconTogglePassword = d3.select(inputBoxPassword).append("i")
+        .attr("class", "bx bxs-show password-toggle")
+        .style("cursor", "pointer")
+        .on("click", () => {
+          const el = inputPassword.node()!;
+          if (el.type === "password") {
+            el.type = "text";
+            iconTogglePassword.attr("class", "bx bxs-hide password-toggle");
+          } else {
+            el.type = "password";
+            iconTogglePassword.attr("class", "bx bxs-show password-toggle");
+          }
+        });
+
+      const inputBoxConfirm = inputConfirm.node().parentNode as HTMLElement;
+      const iconToggleConfirm = d3.select(inputBoxConfirm).append("i")
+        .attr("class", "bx bxs-show password-toggle")
+        .style("cursor", "pointer")
+        .on("click", () => {
+          const el = inputConfirm.node()!;
+          if (el.type === "password") {
+            el.type = "text";
+            iconToggleConfirm.attr("class", "bx bxs-hide password-toggle");
+          } else {
+            el.type = "password";
+            iconToggleConfirm.attr("class", "bx bxs-show password-toggle");
+          }
+        });
+
       // Mensaje de error
       const errorDiv = this.contenedor.append("div")
         .attr("id", "passwordError")
@@ -560,23 +579,12 @@ namespace view {
         .style("color", "#ff6767")
         .style("margin-bottom", "16px");
 
-      // Botones de navegación
-      const nav = this.contenedor.append("div")
-        .style("display", "flex")
-        .style("justify-content", "space-between")
-        .style("width", "80%")
-        .style("margin", "0 auto");
-
-      // Botón atrás
-      this.control.button(nav, {
-        label: "Atrás",
-        onClick: () => this.renderBiometricos()
-      }).style("margin-right", "10px");
-
-      // Botón siguiente con validaciones
-      this.control.button(nav, {
-        label: "Siguiente",
-        onClick: () => {
+      // Botones usando navDobleBotones
+      this.control.navDobleBotones(this.contenedor, {
+        backLabel: "Atrás",
+        onBack: () => this.renderBiometricos(),
+        nextLabel: "Siguiente",
+        onNext: () => {
           const password = inputPassword.node()?.value ?? "";
           const confirm = inputConfirm.node()?.value ?? "";
 
@@ -607,16 +615,15 @@ namespace view {
             return;
           }
 
-          // Si pasa todas las validaciones
+          // Todo bien
           errorDiv.text("");
-          this.persona.PasswordHash = password; // O encripta si necesitas
-          this.renderTerminos(); // Continúa al siguiente paso
-        }
-      }).style("margin-left", "10px");
+          this.persona.PasswordHash = password; // Aquí puedes encriptar si te hace falta
+          this.renderTerminos();
+        },
+        nextDisabled: false
+      });
     }
 
-
-    // Método modificado para incluir callback onContinuar
     public renderTerminos(onContinuar?: () => void) {
       this.contenedor.html("");
       this.texto.titulo1(this.contenedor, "Términos y Condiciones");
@@ -655,33 +662,34 @@ namespace view {
         .attr("for", "accept-terms")
         .text("Acepto los términos y condiciones");
 
-      const nav = this.contenedor.append("div")
-        .attr("class", "navigation-buttons")
-        .style("display", "flex")
-        .style("justify-content", "space-between")
-        .style("width", "80%")
-        .style("margin", "0 auto");
-
-      const btnAtras = this.control.button(nav, {
-        label: "Atrás",
-        onClick: () => this.renderContraseña()
-      });
-      btnAtras.style("margin-right", "10px");
-
-      const btnContinuar = this.control.button(nav, {
-        label: "Continuar",
-        onClick: () => {
+      this.control.navDobleBotones(this.contenedor, {
+        backLabel: "Atrás",
+        onBack: () => this.renderContraseña(),
+        nextLabel: "Continuar",
+        onNext: () => {
           const aceptado = check.node().checked;
           if (!aceptado) {
             alert("Debes aceptar los términos y condiciones");
             return;
           }
+          this.registrarUsuario(this.persona);
           if (this.onBienvenida) this.onBienvenida();
+        },
+        nextDisabled: false
+      });
+    }
+
+    private registrarUsuario(persona: models.Persona) {
+      controller.ApiService.crearUsuario(persona, (success, response) => {
+        if (success && response && response.userId) {
+        } else if (response && response.error) {
+          alert("Error al registrar usuario: " + response.error);
+        } else {
+          alert("Error desconocido al registrar usuario.");
         }
       });
-      btnContinuar.style("margin-left", "10px");
     }
+
+
   }
-
 }
-

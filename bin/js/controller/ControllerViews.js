@@ -1,23 +1,13 @@
 var controller;
 (function (controller) {
-    class VentanaContenedor {
-        constructor(base) {
-            // Caja blanca centrada, solo clase
-            this.contenedor = base.root.append("div")
-                .attr("class", "ventana-contenedor-d3");
-        }
-        limpiar() {
-            this.contenedor.html("");
-        }
-    }
-    controller.VentanaContenedor = VentanaContenedor;
     class VentanaBase {
         constructor() {
             this.fondoUrl = "media/fondoPrincipal.jpg";
+            // Crea el fondo principal
             this.root = d3.select("body")
                 .append("div")
-                .attr("class", "fondo-principal-d3") // solo la clase, no estilos inline
-                .style("background-image", `url(${this.fondoUrl})`); // Este sí dinámico, puede quedar
+                .attr("class", "fondo-principal-d3")
+                .style("background-image", `url(${this.fondoUrl})`);
         }
         cambiarFondo(url) {
             this.root.style("background-image", `url(${url})`);
@@ -28,6 +18,25 @@ var controller;
         mostrar() {
             this.root.style("display", "flex");
         }
+        limpiar() {
+            // Borra todo el contenido UI, pero conserva el div y scripts a salvo
+            this.root.html("");
+            this.cambiarFondo("");
+            this.root.style("display", null);
+            this.root.style("background-color", null);
+        }
     }
     controller.VentanaBase = VentanaBase;
+    class VentanaContenedor {
+        constructor(base) {
+            // Crea el contenedor centrado para pantallas de login/registro/bienvenida
+            this.contenedor = base.root.append("div")
+                .attr("class", "ventana-contenedor-d3");
+        }
+        limpiar() {
+            // Borra solo su contenido, no el nodo
+            this.contenedor.html("");
+        }
+    }
+    controller.VentanaContenedor = VentanaContenedor;
 })(controller || (controller = {}));
